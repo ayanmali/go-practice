@@ -43,8 +43,12 @@ func parseYAML(yml []byte) ([]PathURL, error) {
 	return p, err
 }
 
-func buildMap(yml string) map[string]string {
-	return make(map[string]string)
+func buildMap(pathURLs []PathURL) map[string]string {
+	pathMap := make(map[string]string)
+	for _, x := range pathURLs {
+		pathMap[x.path] = x.url
+	}
+	return pathMap
 }
 
 // YAMLHandler will parse the provided YAML and then return
