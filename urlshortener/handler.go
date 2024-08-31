@@ -2,6 +2,8 @@ package urlshort
 
 import (
 	"net/http"
+
+	"gopkg.in/yaml.v3"
 	//"gopkg.in/yaml.v3"
 )
 
@@ -24,12 +26,21 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 		}
 	}
 	return handlefunction
-	//return nil
 }
 
-func parseYAML(yml []byte) (string, error) {
+// Defining a struct to contain the YAML data
+type PathURL struct {
+	path string `yaml:"path"`
+	url  string `yaml:"url"`
+}
 
-	return "", nil
+func parseYAML(yml []byte) ([]PathURL, error) {
+	var p []PathURL
+	err := yaml.Unmarshal(yml, &p)
+	if err != nil {
+		return nil, err
+	}
+	return p, err
 }
 
 func buildMap(yml string) map[string]string {
